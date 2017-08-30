@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UDPServer", "UDPServer\UDPS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UDPClient", "UDPClient\UDPClient.vcxproj", "{B41FD6A3-AB03-4D7C-A6E5-BB7B91594FF1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Thread", "Thread\Thread.vcxproj", "{0F7C7580-E80F-4343-97AC-899193E7DA0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{B41FD6A3-AB03-4D7C-A6E5-BB7B91594FF1}.Release|x64.Build.0 = Release|x64
 		{B41FD6A3-AB03-4D7C-A6E5-BB7B91594FF1}.Release|x86.ActiveCfg = Release|Win32
 		{B41FD6A3-AB03-4D7C-A6E5-BB7B91594FF1}.Release|x86.Build.0 = Release|Win32
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Debug|x64.ActiveCfg = Debug|x64
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Debug|x64.Build.0 = Debug|x64
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Debug|x86.ActiveCfg = Debug|Win32
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Debug|x86.Build.0 = Debug|Win32
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Release|x64.ActiveCfg = Release|x64
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Release|x64.Build.0 = Release|x64
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Release|x86.ActiveCfg = Release|Win32
+		{0F7C7580-E80F-4343-97AC-899193E7DA0B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
