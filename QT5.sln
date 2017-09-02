@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimeServer", "TimeServer\Ti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimeClient", "TimeClient\TimeClient.vcxproj", "{68009AE6-0E0C-4DD3-A639-1E66985736EA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "manager", "manager\manager.vcxproj", "{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -141,6 +143,14 @@ Global
 		{68009AE6-0E0C-4DD3-A639-1E66985736EA}.Release|x64.Build.0 = Release|x64
 		{68009AE6-0E0C-4DD3-A639-1E66985736EA}.Release|x86.ActiveCfg = Release|Win32
 		{68009AE6-0E0C-4DD3-A639-1E66985736EA}.Release|x86.Build.0 = Release|Win32
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Debug|x64.ActiveCfg = Debug|x64
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Debug|x64.Build.0 = Debug|x64
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Debug|x86.ActiveCfg = Debug|Win32
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Debug|x86.Build.0 = Debug|Win32
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Release|x64.ActiveCfg = Release|x64
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Release|x64.Build.0 = Release|x64
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Release|x86.ActiveCfg = Release|Win32
+		{C8A62E5A-CF50-450A-B7FB-316C8FDF2D23}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
