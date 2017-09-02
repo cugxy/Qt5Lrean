@@ -12,7 +12,8 @@ public:
 	TimeServer(QObject *parent = 0);
 	~TimeServer();
 protected:
-	void incomingConnection(int socketDercriptor);
+	public slots:
+	void newConnect();
 private:
 	dialog * m_pDlg;
 };

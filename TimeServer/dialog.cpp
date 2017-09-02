@@ -28,7 +28,7 @@ dialog::dialog(QWidget *parent)
 	m_pServer = new TimeServer(this);
 	if (!m_pServer->listen())
 	{
-		QMessageBox::critical(this, tr("muilt thread time server"), tr("can not start server %1").arg(m_pServer->errorString()));
+		QMessageBox::critical(this, tr("server"), tr("can not start server %1").arg(m_pServer->errorString()));
 		close();
 		return;
 	}

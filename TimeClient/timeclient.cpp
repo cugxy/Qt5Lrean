@@ -76,6 +76,7 @@ void TimeClient::getTime()
 	m_pGetBtn->setEnabled(false);
 	m_Time2u = 0;
 	m_pSocket->abort();
+	int i = m_pPortEdit->text().toInt();
 	m_pSocket->connectToHost(m_pServerNameEdit->text(), m_pPortEdit->text().toInt());
 }
 
