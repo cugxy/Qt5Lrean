@@ -54,8 +54,7 @@ TimeClient::TimeClient(QWidget *parent)
 	connect(m_pQuitBtn, SIGNAL(clicked()), this, SLOT(close()));
 
 	m_pSocket = new QTcpSocket(this);
-	connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(readTime()));
-	connect(m_pSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(ShowError(QAbstractSocket::SocketError))); 
+
 
 	m_pPortEdit->setFocus();
 
@@ -78,6 +77,8 @@ void TimeClient::getTime()
 	m_pSocket->abort();
 	int i = m_pPortEdit->text().toInt();
 	m_pSocket->connectToHost(m_pServerNameEdit->text(), m_pPortEdit->text().toInt());
+	connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(readTime()));
+	connect(m_pSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(ShowError(QAbstractSocket::SocketError)));
 }
 
 void TimeClient::readTime()
