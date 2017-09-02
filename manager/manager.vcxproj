@@ -211,6 +211,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="connection.h" />
     <ClInclude Include="GeneratedFiles\ui_widget.h" />
   </ItemGroup>
   <ItemGroup>

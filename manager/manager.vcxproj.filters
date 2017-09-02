@@ -66,5 +66,8 @@
     <ClInclude Include="GeneratedFiles\ui_widget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
