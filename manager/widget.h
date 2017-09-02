@@ -2,19 +2,32 @@
 #define WIDGET_H
 
 #include <QtWidgets/QWidget>
+#include <QMainWindow>
+#include <QMenuBar>
 
 class Ui_WidgetClass;
 
-class Widget : public QWidget
+class Widget : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	Widget(QWidget *parent = 0);
+	explicit Widget(QWidget *parent = 0);
 	~Widget();
 
+	QMenu * m_pManageMenu;
+	QMenu * m_pPasswordMenu;
+
+	QAction * m_pManageAct;
+	QAction * m_pChartAct;
+	QAction * m_pQuitAct;
+	private slots:
+	void slotOnManageMenuClicked();
+	void slotOnChartMenuClicked();
+	void slotOnQuitMenuClicked();
 private:
 	Ui_WidgetClass *ui;
+	void createMenuBar();
 };
 
 #endif // WIDGET_H
