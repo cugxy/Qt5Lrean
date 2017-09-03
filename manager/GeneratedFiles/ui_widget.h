@@ -119,7 +119,7 @@ public:
         label_19->setGeometry(QRect(207, 140, 16, 16));
         sellLastNumLabel = new QLabel(page_3);
         sellLastNumLabel->setObjectName(QStringLiteral("sellLastNumLabel"));
-        sellLastNumLabel->setGeometry(QRect(130, 110, 60, 16));
+        sellLastNumLabel->setGeometry(QRect(130, 110, 111, 16));
         sellOkBtn = new QPushButton(page_3);
         sellOkBtn->setObjectName(QStringLiteral("sellOkBtn"));
         sellOkBtn->setGeometry(QRect(30, 210, 75, 23));
@@ -129,7 +129,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("\345\207\272\345\224\256\350\275\246\350\276\206"));
         page_4 = new QWidget();
         page_4->setObjectName(QStringLiteral("page_4"));
-        page_4->setGeometry(QRect(0, 0, 98, 28));
+        page_4->setGeometry(QRect(0, 0, 307, 305));
         toolBox->addItem(page_4, QStringLiteral("Page 2"));
         dailyList = new QListWidget(page);
         dailyList->setObjectName(QStringLiteral("dailyList"));
@@ -158,7 +158,7 @@ public:
         label_6->setText(QApplication::translate("WidgetClass", "\346\225\260\351\207\217\357\274\232", Q_NULLPTR));
         label_12->setText(QApplication::translate("WidgetClass", "\344\270\207", Q_NULLPTR));
         label_19->setText(QApplication::translate("WidgetClass", "\344\270\207", Q_NULLPTR));
-        sellLastNumLabel->setText(QApplication::translate("WidgetClass", "\345\211\251\344\275\231\346\225\260\351\207\217\357\274\232", Q_NULLPTR));
+        sellLastNumLabel->setText(QString());
         sellOkBtn->setText(QApplication::translate("WidgetClass", "\347\241\256\345\256\232", Q_NULLPTR));
         sellCancelBtn->setText(QApplication::translate("WidgetClass", "\345\217\226\346\266\210", Q_NULLPTR));
         toolBox->setItemText(toolBox->indexOf(page_3), QApplication::translate("WidgetClass", "\345\207\272\345\224\256\350\275\246\350\276\206", Q_NULLPTR));

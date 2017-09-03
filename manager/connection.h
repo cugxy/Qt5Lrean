@@ -36,5 +36,6 @@ static bool createConnection()
 	query.exec("insert into brand values ('07', '帕萨特', '上海大众', 73, 67, 512, 123)");
 	query.exec("insert into brand values ('08', '桑塔纳', '上海大众', 72, 23, 19, 451)");
 	query.exec("insert into brand values ('09', '奥额为', '上海大众', 54, 165, 65, 23)");
+	return true;
 }
 

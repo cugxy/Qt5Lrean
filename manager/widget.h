@@ -25,6 +25,11 @@ public:
 	void slotOnManageMenuClicked();
 	void slotOnChartMenuClicked();
 	void slotOnQuitMenuClicked();
+	void slotSellFactComBoxCurrentIndexChanged(const QString &);
+	void slotSellBrandComBoxCurrentIndexChanged(const QString &);
+	void slotSellNumSpinBoxValueChanged(int);
+	void slotSellOkClicked();
+	void slotSellCancelClicked();
 private:
 	Ui_WidgetClass *ui;
 	void createMenuBar();
