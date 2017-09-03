@@ -7,6 +7,8 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
+#include <QFile>
+
 static bool createConnection()
 {
 	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -36,6 +38,23 @@ static bool createConnection()
 	query.exec("insert into brand values ('07', '帕萨特', '上海大众', 73, 67, 512, 123)");
 	query.exec("insert into brand values ('08', '桑塔纳', '上海大众', 72, 23, 19, 451)");
 	query.exec("insert into brand values ('09', '奥额为', '上海大众', 54, 165, 65, 23)");
+	return true;
+}
+
+static bool createXML()
+{
+	QFile file("data.xml");
+	if (file.exists()) return true;
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) return false;
+	QDomDocument doc;
+	QDomProcessingInstruction instruction;
+	instruction = doc.createProcessingInstruction("xml", "version = \"1.0\"encoding=\"UTF-8\"");
+	doc.appendChild(instruction);
+	QDomElement root = doc.createElement(QString("日销售清单"));
+	doc.appendChild(root);
+	QTextStream out(&file);
+	doc.save(out, 4);
+	file.close();
 	return true;
 }
 

@@ -3,7 +3,7 @@
 #include "connection.h"
 int main(int argc, char *argv[])
 {
-	if (!createConnection())
+	if (!createConnection() || !createXML())
 	{
 		return 0;
 	}
