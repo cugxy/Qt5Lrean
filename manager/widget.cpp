@@ -4,6 +4,9 @@
 #include <QSqlQueryModel>
 #include <qsplitter.h>
 #include <qmessagebox.h>
+#include <qdatetime.h>
+#include <QFile>
+#include <QTextStream>
 
 Widget::Widget(QWidget *parent)
 	: QMainWindow(parent)
@@ -39,6 +42,29 @@ Widget::Widget(QWidget *parent)
 Widget::~Widget()
 {
 
+}
+
+QString Widget::getDateTime(DataTimeType type)
+{
+	QDateTime datetime = QDateTime::currentDateTime();
+	QString date = datetime.toString("yyyy-MM-dd");
+	QString time = datetime.toString("hh:mm:ss");
+	QString dateandtime = datetime.toString("yyyy-MM-dd dddd hh:mm");
+	switch (type)
+	{
+	case Widget::Time:
+		return time;
+		break;
+	case Widget::Date:
+		return date;
+		break;
+	case Widget::DateTime:
+		return dateandtime;
+		break;
+	default:
+		return QString();
+		break;
+	}
 }
 
 void Widget::slotOnManageMenuClicked()
@@ -171,4 +197,40 @@ void Widget::createMenuBar()
 	connect(m_pManageAct, SIGNAL(triggered()), this, SLOT(slotOnManageMenuClicked()));
 	connect(m_pChartAct, SIGNAL(triggered()), this, SLOT(slotOnChartMenuClicked()));
 	connect(m_pQuitAct, SIGNAL(triggered()), this, SLOT(slotOnQuitMenuClicked()));
+}
+
+bool Widget::docRead()
+{
+	QFile file("data.xml");
+	if (!file.open(QIODevice::ReadOnly)) return false;
+	if (!doc.setContent(&file))
+	{
+		file.close();
+		return false;
+	}
+	file.close();
+	return true;
+}
+
+bool Widget::docWrite()
+{
+	QFile file("data.xml");
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))return false;
+	QTextStream out(&file);
+	doc.save(out, 4);
+	file.close();
+	return true;
+
+}
+
+void Widget::writeXML()
+{
+}
+
+void Widget::createNodes(QDomElement & data)
+{
+}
+
+void Widget::showDailyList()
+{
 }
