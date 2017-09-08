@@ -37,6 +37,7 @@ Widget::Widget(QWidget *parent)
 	connect(ui->sellNumSpinBox, SIGNAL(valueChanged(int)), this, SLOT(slotSellNumSpinBoxValueChanged(int)));
 
 	slotSellCancelClicked();
+	showDailyList();
 }
 
 Widget::~Widget()
@@ -163,6 +164,8 @@ void Widget::slotSellOkClicked()
 	{
 		QSqlDatabase::database().commit();
 		QMessageBox::information(this, tr("提示"), tr("购车成功"), QMessageBox::Ok);
+		writeXML();
+		showDailyList();
 	}
 	else
 	{
@@ -203,7 +206,7 @@ bool Widget::docRead()
 {
 	QFile file("data.xml");
 	if (!file.open(QIODevice::ReadOnly)) return false;
-	if (!doc.setContent(&file))
+	if (!m_doc.setContent(&file))
 	{
 		file.close();
 		return false;
@@ -217,20 +220,115 @@ bool Widget::docWrite()
 	QFile file("data.xml");
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))return false;
 	QTextStream out(&file);
-	doc.save(out, 4);
+	m_doc.save(out, 4);
 	file.close();
 	return true;
-
 }
 
 void Widget::writeXML()
 {
+	if (docRead())
+	{
+		QString currentData = getDateTime(Date);
+		QDomElement root = m_doc.documentElement();
+		if (!root.hasChildNodes())
+		{
+			QDomElement date = m_doc.createElement(QString("日期"));
+			QDomAttr curDate = m_doc.createAttribute("date");
+			curDate.setValue(currentData);
+			date.setAttributeNode(curDate);
+			root.appendChild(date);
+			createNodes(date);
+		}
+		else
+		{
+			QDomElement date = root.lastChild().toElement();
+			if (date.attribute("date") == currentData)
+				createNodes(date);
+			else
+			{
+				QDomElement date = m_doc.createElement(QString("日期"));
+				QDomAttr curDate = m_doc.createAttribute("date");
+				curDate.setValue(currentData);
+				date.setAttributeNode(curDate);
+				root.appendChild(date);
+				createNodes(date);
+			}
+		}
+		docWrite();
+	}
 }
 
 void Widget::createNodes(QDomElement & data)
 {
+	QDomElement time = m_doc.createElement(QString("时间"));
+	QDomAttr curtTme = m_doc.createAttribute("time");
+	curtTme.setValue(getDateTime(Time));
+	time.setAttributeNode(curtTme);
+	data.appendChild(time);
+
+	QDomElement factory = m_doc.createElement(QString("厂家"));
+	QDomElement brand = m_doc.createElement(QString("品牌"));
+	QDomElement price = m_doc.createElement(QString("报价"));
+	QDomElement num = m_doc.createElement(QString("数量"));
+	QDomElement sum = m_doc.createElement(QString("金额"));
+	QDomText text;
+	text = m_doc.createTextNode(QString("%1").arg(ui->sellFactComBox->currentText()));
+	factory.appendChild(text);
+	text = m_doc.createTextNode(QString("%1").arg(ui->sellBandComBox->currentText()));
+	brand.appendChild(text);
+	text = m_doc.createTextNode(QString("%1").arg(ui->sellPriceLineEidt->text()));
+	price.appendChild(text);
+	text = m_doc.createTextNode(QString("%1").arg(ui->sellNumSpinBox->value()));
+	num.appendChild(text);
+	text = m_doc.createTextNode(QString("%1").arg(ui->sellSumLineEdit->text()));
+	sum.appendChild(text);
+
+	time.appendChild(factory);
+	time.appendChild(brand);
+	time.appendChild(price);
+	time.appendChild(num);
+	time.appendChild(sum);
 }
 
 void Widget::showDailyList()
 {
+	ui->dailyList->clear();
+	if (docRead())
+	{
+		QDomElement root = m_doc.documentElement();
+		QString strTitle = root.tagName();
+		QListWidgetItem * pTitleItem = new QListWidgetItem;
+		pTitleItem->setText(QString("==========%1==========").arg(strTitle));
+		pTitleItem->setTextAlignment(Qt::AlignCenter);
+		ui->dailyList->addItem(pTitleItem);
+		if (root.hasChildNodes())
+		{
+			QString strCurDate = getDateTime(Date);
+			QDomElement dateElement = root.lastChild().toElement();
+			QString strDate = dateElement.attribute("date");
+			if (strDate == strCurDate)
+			{
+				ui->dailyList->addItem("");
+				ui->dailyList->addItem(QString("日期%1").arg(strDate));
+				ui->dailyList->addItem("");
+				QDomNodeList childrens = dateElement.childNodes();
+				for (int i = 0; i < childrens.count(); i++)
+				{
+					QDomNode node = childrens.at(i);
+					QString strTime = node.toElement().attribute("time");
+					QDomNodeList list = node.childNodes();
+					QString strFactory = list.at(0).toElement().text();
+					QString strBrand = list.at(1).toElement().text();
+					QString strPrice = list.at(2).toElement().text();
+					QString strNum = list.at(3).toElement().text();
+					QString strSum = list.at(4).toElement().text();
+					QListWidgetItem * pTempItem = new QListWidgetItem;
+					pTempItem->setText(QString("======================").arg(strTitle));
+					pTempItem->setTextAlignment(Qt::AlignCenter);
+					ui->dailyList->addItem(pTempItem);
+				}
+			}
+		}
+	}
 }

@@ -38,7 +38,7 @@ private:
 	void createMenuBar();
 private:
 	Ui_WidgetClass *ui;
-	QDomDocument doc;
+	QDomDocument m_doc;
 	bool docRead();
 	bool docWrite();
 	void writeXML();
