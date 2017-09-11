@@ -4,6 +4,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_myword.h"
 
+class QMdiArea;
+
 class MyWord : public QMainWindow
 {
 	Q_OBJECT
@@ -14,6 +16,7 @@ public:
 
 private:
 	Ui::MyWordClass ui;
+	QMdiArea * m_pMdiArea;
 };
 
 #endif // MYWORD_H
