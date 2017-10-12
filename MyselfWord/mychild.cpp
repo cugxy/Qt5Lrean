@@ -22,12 +22,12 @@ void MyChild::newFile()
 
 	setWindowTitle(m_strCurrentFile + "[*]" + tr(" - Myself word"));
 
-	connect(document(), SIGNAL(), this, SLOT(slotDocumentWasModefied()));
+	//connect(document(), SIGNAL(), this, SLOT(slotDocumentWasModefied()));
 }
 
 QString MyChild::userFriendlyCurrentFile()
 {
-	return QString();
+	return strippedName(m_strCurrentFile);
 }
 
 QString MyChild::currentFile()
@@ -37,14 +37,15 @@ QString MyChild::currentFile()
 
 void MyChild::closeEvent(QCloseEvent * event)
 {
+	event->accept();
 }
 
 QString MyChild::strippedName(const QString & fullFileName)
 {
-	return QString();
+	return QFileInfo(fullFileName).fileName();
 }
 
 void MyChild::slotDocumentWasModefied()
 {
-
+	//setWindowModefied(document()->is)
 }
