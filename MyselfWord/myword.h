@@ -18,6 +18,7 @@ public:
 
 private:
 	Ui::MyWordClass ui;
+
 	QMdiArea * m_pMdiArea;
 
 	QMenu * m_pFileMenu;
@@ -27,6 +28,10 @@ private:
 	QMenu * m_pFormatMenu;
 	QMenu * m_pFontMenu;
 	QMenu * m_pAlignMenu;
+
+	QMenu * m_pWindowMenu;
+
+	QMenu * m_pAboutMenu;
 
 	QAction * m_pNewAct;
 	QAction * m_pOpenAct;
@@ -51,9 +56,24 @@ private:
 	QAction * m_pJustifyAct;
 	QAction * m_pColorAct;
 
+	QAction * m_pCloseAct;
+	QAction * m_pCloseAllAct;
+	QAction * m_pTileAct;
+	QAction * m_pCascadeAct;
+	QAction * m_pNextAct;
+	QAction * m_pPreviousAct;
+	QAction * m_pSeparatorAct;
+
+	QAction * m_pAboutAct;
+	QAction * m_pAboutQtAct;
+
 private:
 	void createActions();
 	void createMenus();
+	private slots:
+	void textAligen(QAction*);
+	void updateWindowMenu();
+	void about();
 };
 
 #endif // MYWORD_H

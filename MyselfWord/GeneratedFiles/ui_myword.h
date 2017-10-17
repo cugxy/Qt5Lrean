@@ -15,9 +15,6 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,28 +22,16 @@ QT_BEGIN_NAMESPACE
 class Ui_MyWordClass
 {
 public:
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
     QWidget *centralWidget;
-    QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MyWordClass)
     {
         if (MyWordClass->objectName().isEmpty())
             MyWordClass->setObjectName(QStringLiteral("MyWordClass"));
         MyWordClass->resize(600, 400);
-        menuBar = new QMenuBar(MyWordClass);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
-        MyWordClass->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MyWordClass);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        MyWordClass->addToolBar(mainToolBar);
         centralWidget = new QWidget(MyWordClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MyWordClass->setCentralWidget(centralWidget);
-        statusBar = new QStatusBar(MyWordClass);
-        statusBar->setObjectName(QStringLiteral("statusBar"));
-        MyWordClass->setStatusBar(statusBar);
 
         retranslateUi(MyWordClass);
 
