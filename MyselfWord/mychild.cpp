@@ -55,6 +55,35 @@ bool MyChild::loadFile(const QString &strFileName)
 	return false;
 }
 
+bool MyChild::save()
+{
+	if (m_bIsUntitled)
+		return saveAs();
+	else
+		return saveFile(m_strCurrentFile);
+}
+
+bool MyChild::saveAs()
+{
+	QString strFileName = QFileDialog::getOpenFileName(this, tr("Open"), QString(), tr("Html(*.html|*.htm); All(*.*)"));
+	if (strFileName.isEmpty())
+		return false;
+	return saveFile(m_strCurrentFile);
+}
+
+bool MyChild::saveFile(QString strFileName)
+{
+	if (!(strFileName.endsWith(".htm", Qt::CaseInsensitive) || (strFileName.endsWith(".html", Qt::CaseInsensitive))))
+	{
+		strFileName.append(".html");
+	}
+	QTextDocumentWriter writer(strFileName);
+	bool bSuccess = writer.write(this->document());
+	if (bSuccess)
+		setCurrentFile(strFileName);
+	return bSuccess;
+}
+
 QString MyChild::userFriendlyCurrentFile()
 {
 	return strippedName(m_strCurrentFile);
@@ -74,9 +103,25 @@ void MyChild::setCurrentFile(const QString & strFileName)
 	setWindowTitle(userFriendlyCurrentFile() + "[*]");
 }
 
+bool MyChild::maybeSave()
+{
+	if (!document()->isModified())
+		return true;
+	QMessageBox::StandardButton ret;
+	ret = QMessageBox::warning(this, tr("My Qt Word"), tr("file %1 is modified, would you like to save?").arg(userFriendlyCurrentFile()), QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+	if (QMessageBox::Save == ret)
+		return save();
+	else if (QMessageBox::Cancel == ret)
+		return false;
+	return true;
+}
+
 void MyChild::closeEvent(QCloseEvent * event)
 {
-	event->accept();
+	if (maybeSave())
+		event->accept();
+	else
+		event->ignore();
 }
 
 QString MyChild::strippedName(const QString & fullFileName)

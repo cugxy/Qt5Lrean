@@ -11,10 +11,14 @@ public:
 	~MyChild();
 	void newFile();
 	bool loadFile(const QString &strFileName);
+	bool save();
+	bool saveAs();
+	bool saveFile(QString strFileName);
 	QString userFriendlyCurrentFile();
 	QString currentFile();
 private:
 	void setCurrentFile(const QString &strFileName);
+	bool maybeSave();
 protected:
 	void closeEvent(QCloseEvent *event);
 private slots:

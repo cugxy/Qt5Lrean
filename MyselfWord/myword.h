@@ -24,6 +24,9 @@ public:
 	private slots:
 	void slotFileNew();
 	void slotFileOpen();
+	void slotFileSave();
+	void slotFileSaveAs();
+
 	void textAligen(QAction*);
 	void updateWindowMenu();
 	void about();
@@ -38,6 +41,7 @@ private:
 	void enabledText();
 	MyChild* activeChild();
 	QMdiSubWindow* findMyChild(const QString &strFileName);
+
 protected:
 	void closeEvent(QCloseEvent* event);
 private:

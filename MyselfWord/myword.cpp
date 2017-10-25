@@ -47,11 +47,13 @@ void MyWord::createActions()
 	m_pSaveAct->setShortcut(QKeySequence::Save);
 	m_pSaveAct->setToolTip(tr("Save"));
 	m_pSaveAct->setStatusTip(tr("Save file"));
+	connect(m_pSaveAct, SIGNAL(triggered()), this, SLOT(slotFileSave()));
 
 	m_pSaveAsAct = new QAction(tr("Save As"), this);
 	m_pSaveAsAct->setShortcut(QKeySequence::SaveAs);
 	m_pSaveAsAct->setToolTip(tr("Save as"));
 	m_pSaveAsAct->setStatusTip(tr("Save an file"));
+	connect(m_pSaveAsAct, SIGNAL(triggered()), this, SLOT(slotFileSaveAs()));
 
 	m_pPrintAct = new QAction(tr("Print"), this);
 	m_pPrintAct->setShortcut(QKeySequence::Print);
@@ -293,6 +295,7 @@ QMdiSubWindow * MyWord::findMyChild(const QString & strFileName)
 	return nullptr;
 }
 
+
 void MyWord::closeEvent(QCloseEvent * event)
 {
 	m_pMdiArea->closeAllSubWindows();
@@ -334,6 +337,18 @@ void MyWord::slotFileOpen()
 		else
 			pChild->close();
 	}
+}
+
+void MyWord::slotFileSave()
+{
+	if (activeChild() && activeChild()->save())
+		statusBar()->showMessage(tr("save success"), 2000);
+}
+
+void MyWord::slotFileSaveAs()
+{
+	if (activeChild() && activeChild()->saveAs())
+		statusBar()->showMessage(tr("save success"), 2000);
 }
 
 void MyWord::updateWindowMenu()
