@@ -1,14 +1,14 @@
 #ifndef MYCHILD_H
 #define MYCHILD_H
 
-#include <QLineEdit>
+#include <QTextEdit>
 
-class MyChild : public QLineEdit
+class MyChild : public QTextEdit
 {
 	Q_OBJECT
 
 public:
-	MyChild(QWidget *parent);
+	MyChild(QWidget *parent = 0);
 	~MyChild();
 	void newFile();
 	QString userFriendlyCurrentFile();

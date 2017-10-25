@@ -2,7 +2,7 @@
 #include <QtWidgets>
 
 MyChild::MyChild(QWidget *parent)
-	: QLineEdit(parent)
+	: QTextEdit(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	m_bIsUntitled = true;

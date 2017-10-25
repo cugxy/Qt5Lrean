@@ -7,6 +7,11 @@
 class QMdiArea;
 class QAction;
 class QMenu;
+class QComboBox;
+class QFontComboBox;
+class MyChild;
+class QMdiSubWindow;
+class QSignalMapper;
 
 class MyWord : public QMainWindow
 {
@@ -16,8 +21,27 @@ public:
 	MyWord(QWidget *parent = 0);
 	~MyWord();
 
+	private slots:
+	void slotFileNew();
+	void textAligen(QAction*);
+	void updateWindowMenu();
+	void about();
+	void slotUpdateMenu();
+	void slotSetActiveSubWindow();
+	MyChild* createMyChild();
+private:
+	void createActions();
+	void createMenus();
+	void createToolBars();
+	void createStatusBar();
+	void enabledText();
+	MyChild* activeChild();
+protected:
+	void closeEvent(QCloseEvent* event);
 private:
 	Ui::MyWordClass ui;
+
+	QSignalMapper * m_pWindowMapper;
 
 	QMdiArea * m_pMdiArea;
 
@@ -67,13 +91,14 @@ private:
 	QAction * m_pAboutAct;
 	QAction * m_pAboutQtAct;
 
-private:
-	void createActions();
-	void createMenus();
-	private slots:
-	void textAligen(QAction*);
-	void updateWindowMenu();
-	void about();
+	QToolBar * m_pFileToolBar;
+	QToolBar * m_pEditToolBar;
+	QToolBar * m_pFormatToolBar;
+	QToolBar * m_pComboToolBar;
+	QComboBox * m_pStyleBox;
+	QFontComboBox * m_pFontBox;
+	QComboBox * m_pSizeBox;
+
 };
 
 #endif // MYWORD_H

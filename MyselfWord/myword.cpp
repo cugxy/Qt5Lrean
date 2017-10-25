@@ -1,19 +1,27 @@
 #include "myword.h"
+#include "mychild.h"
 #include <QtWidgets>
+#include <QMdiSubWindow>
+#include <QSignalMapper>
 
 MyWord::MyWord(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	move(200, 150);
+	resize(800, 500);
+	setWindowTitle(tr("My Word"));
 	m_pMdiArea = new QMdiArea;
 	m_pMdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	m_pMdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	setCentralWidget(m_pMdiArea);
-	move(200, 150);
-	resize(800, 500);
-	setWindowTitle(tr("My Word"));
 	createActions();
 	createMenus();
+	connect(m_pMdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(slotUpdateMenu()));
+	slotUpdateMenu();
+	m_pWindowMapper = new QSignalMapper(this);
+	connect(m_pWindowMapper, SIGNAL(mapped(QWidget*)), this, SLOT(slotSetActiveSubWindow(QWidget*)));
+
 }
 
 MyWord::~MyWord()
@@ -27,6 +35,7 @@ void MyWord::createActions()
 	m_pNewAct->setShortcut(QKeySequence::New);
 	m_pNewAct->setToolTip(tr("New"));
 	m_pNewAct->setStatusTip(tr("New an file"));
+	connect(m_pNewAct, SIGNAL(triggered()), this, SLOT(slotFileNew()));
 
 	m_pOpenAct = new QAction(tr("Open"), this);
 	m_pOpenAct->setShortcut(QKeySequence::Open);
@@ -232,13 +241,133 @@ void MyWord::createMenus()
 	m_pAboutMenu->addAction(m_pAboutQtAct);
 }
 
-void MyWord::updateWindowMenu()
+void MyWord::createToolBars()
 {
+	m_pFileToolBar = addToolBar(tr("File"));
+	m_pFileToolBar->addAction(m_pNewAct);
 }
 
+void MyWord::createStatusBar()
+{
+	statusBar()->showMessage(tr("OK"));
+}
+
+MyChild * MyWord::createMyChild()
+{
+	MyChild *pChild = new MyChild();
+	m_pMdiArea->addSubWindow(pChild);
+	connect(pChild, SIGNAL(copyAvailable(bool)), m_pCutAct, SLOT(setEnabled(bool)));
+	connect(pChild, SIGNAL(copyAvailable(bool)), m_pCopyAct, SLOT(setEnabled(bool)));
+	return pChild;
+}
+
+void MyWord::enabledText()
+{
+	m_pBoldAct->setEnabled(true);
+	m_pItalicAct->setEnabled(true);
+	m_pUnderlineAct->setEnabled(true);
+	m_pLeftAlignAct->setEnabled(true);
+	m_pCenterAct->setEnabled(true);
+	m_pRightAlignAct->setEnabled(true);
+	m_pJustifyAct->setEnabled(true);
+	m_pColorAct->setEnabled(true);
+}
+
+MyChild * MyWord::activeChild()
+{
+	if (QMdiSubWindow * pActSubWindow = m_pMdiArea->activeSubWindow())
+		return qobject_cast<MyChild *>(pActSubWindow->widget());
+	return nullptr;
+}
+
+void MyWord::closeEvent(QCloseEvent * event)
+{
+	m_pMdiArea->closeAllSubWindows();
+	if (m_pMdiArea->currentSubWindow())
+	{
+		event->ignore();
+	}
+	else
+	{
+		event->accept();
+	}
+}
+
+void MyWord::slotFileNew()
+{
+	MyChild* pChild = createMyChild();
+	pChild->newFile();
+	pChild->show();
+	enabledText();
+}
+
+void MyWord::updateWindowMenu()
+{
+	m_pWindowMenu->clear();
+	m_pWindowMenu->addAction(m_pCloseAct);
+	m_pWindowMenu->addAction(m_pCloseAllAct);
+	m_pWindowMenu->addSeparator();
+	m_pWindowMenu->addAction(m_pTileAct);
+	m_pWindowMenu->addAction(m_pCascadeAct);
+	m_pWindowMenu->addSeparator();
+	m_pWindowMenu->addAction(m_pNextAct);
+	m_pWindowMenu->addAction(m_pPreviousAct);
+	m_pWindowMenu->addAction(m_pSeparatorAct);
+
+	QList<QMdiSubWindow* > lstSubWindow = m_pMdiArea->subWindowList();
+	m_pSeparatorAct->setVisible(!lstSubWindow.isEmpty());
+	auto it = lstSubWindow.begin();
+	int i = 0;
+	for (; it != lstSubWindow.end(); ++it)
+	{
+		MyChild * pChild = qobject_cast<MyChild*>((*it)->widget());
+		QString strText = tr("%1 %2").arg(++i).arg(pChild->userFriendlyCurrentFile());
+		QAction * pAct = m_pWindowMenu->addAction(strText);
+		pAct->setCheckable(true);
+		pAct->setChecked(pChild == activeChild());
+		connect(pAct, SIGNAL(triggered()), m_pWindowMapper, SLOT(map()));
+		m_pWindowMapper->setMapping(pAct, (*it));
+	}
+	enabledText();
+} 
+ 
 void MyWord::about()
 {
 	QMessageBox::about(this, tr("About"), tr("My Word1.0"));
+}
+
+void MyWord::slotUpdateMenu()
+{
+	bool bHasChild = (activeChild() != nullptr);
+	m_pSaveAct->setEnabled(bHasChild);
+	m_pSaveAsAct->setEnabled(bHasChild);
+	m_pPrintAct->setEnabled(bHasChild);
+	m_pPrintPreviewAct->setEnabled(bHasChild);
+	m_pPasteAct->setEnabled(bHasChild);
+	m_pCloseAct->setEnabled(bHasChild);
+	m_pCloseAllAct->setEnabled(bHasChild);
+	m_pTileAct->setEnabled(bHasChild);
+	m_pCascadeAct->setEnabled(bHasChild);
+	m_pNextAct->setEnabled(bHasChild);
+	m_pPreviousAct->setEnabled(bHasChild);
+	m_pSeparatorAct->setEnabled(bHasChild);
+	bool bHasSelection = (activeChild() && activeChild()->textCursor().hasSelection());
+
+	m_pCutAct->setEnabled(bHasSelection);
+	m_pCopyAct->setEnabled(bHasSelection);
+	m_pBoldAct->setEnabled(bHasSelection);
+	m_pItalicAct->setEnabled(bHasSelection);
+	m_pUnderlineAct->setEnabled(bHasSelection);
+	m_pLeftAlignAct->setEnabled(bHasSelection);
+	m_pCenterAct->setEnabled(bHasSelection);
+	m_pRightAlignAct->setEnabled(bHasSelection);
+	m_pJustifyAct->setEnabled(bHasSelection);
+	m_pColorAct->setEnabled(bHasSelection);
+
+}
+
+void MyWord::slotSetActiveSubWindow()
+{
 }
 
 void MyWord::textAligen(QAction* pAct)
