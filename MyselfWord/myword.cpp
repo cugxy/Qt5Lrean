@@ -41,6 +41,7 @@ void MyWord::createActions()
 	m_pOpenAct->setShortcut(QKeySequence::Open);
 	m_pOpenAct->setToolTip(tr("Open"));
 	m_pOpenAct->setStatusTip(tr("Open an file"));
+	connect(m_pOpenAct, SIGNAL(triggered()), this, SLOT(slotFileOpen()));
 
 	m_pSaveAct = new QAction(tr("Save"), this);
 	m_pSaveAct->setShortcut(QKeySequence::Save);
@@ -280,6 +281,11 @@ MyChild * MyWord::activeChild()
 	return nullptr;
 }
 
+QMdiSubWindow * MyWord::findMyChild(const QString & strFileName)
+{
+	return nullptr;
+}
+
 void MyWord::closeEvent(QCloseEvent * event)
 {
 	m_pMdiArea->closeAllSubWindows();
@@ -299,6 +305,15 @@ void MyWord::slotFileNew()
 	pChild->newFile();
 	pChild->show();
 	enabledText();
+}
+
+void MyWord::slotFileOpen()
+{
+	QString strFileName = QFileDialog::getOpenFileName(this, tr("Open"), QString(), tr("Html(*.html|*.htm); All(*.*)"));
+	if (!strFileName.isEmpty())
+	{
+		QMdiSubWindow * pExisting = findMyChild(strFileName);
+	}
 }
 
 void MyWord::updateWindowMenu()

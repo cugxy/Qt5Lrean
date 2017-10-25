@@ -23,6 +23,7 @@ public:
 
 	private slots:
 	void slotFileNew();
+	void slotFileOpen();
 	void textAligen(QAction*);
 	void updateWindowMenu();
 	void about();
@@ -36,6 +37,7 @@ private:
 	void createStatusBar();
 	void enabledText();
 	MyChild* activeChild();
+	QMdiSubWindow* findMyChild(const QString &strFileName);
 protected:
 	void closeEvent(QCloseEvent* event);
 private:

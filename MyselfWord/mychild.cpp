@@ -25,6 +25,36 @@ void MyChild::newFile()
 	//connect(document(), SIGNAL(), this, SLOT(slotDocumentWasModefied()));
 }
 
+bool MyChild::loadFile(const QString &strFileName)
+{
+	if (!strFileName.isEmpty())
+	{
+		if (QFile::exists(strFileName))
+		{
+			QFile file(strFileName);
+			if (file.open(QFile::ReadOnly))
+			{
+				QByteArray data = file.readAll();
+				QTextCodec * pCodec = Qt::codecForHtml(data);
+				QString str = pCodec->toUnicode(data);
+				if (Qt::mightBeRichText(str))
+				{
+					this->setHtml(str);
+				}
+				else
+				{
+					str = QString::fromLocal8Bit(data);
+					this->setPlainText(str);
+				}
+				setCurrentFile(strFileName);
+				connect(document(), SIGNAL(contentsChanged()), this, SLOT(slotDocumentWasModefied()));
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 QString MyChild::userFriendlyCurrentFile()
 {
 	return strippedName(m_strCurrentFile);
@@ -33,6 +63,15 @@ QString MyChild::userFriendlyCurrentFile()
 QString MyChild::currentFile()
 {
 	return QString();
+}
+
+void MyChild::setCurrentFile(const QString & strFileName)
+{
+	m_strCurrentFile = QFileInfo(strFileName).canonicalFilePath();
+	m_bIsUntitled = false;
+	document()->setModified(false);
+	setWindowModified(false);
+	setWindowTitle(userFriendlyCurrentFile() + "[*]");
 }
 
 void MyChild::closeEvent(QCloseEvent * event)
@@ -47,5 +86,5 @@ QString MyChild::strippedName(const QString & fullFileName)
 
 void MyChild::slotDocumentWasModefied()
 {
-	//setWindowModefied(document()->is)
+	setWindowModified(document()->isModified());
 }
