@@ -283,6 +283,13 @@ MyChild * MyWord::activeChild()
 
 QMdiSubWindow * MyWord::findMyChild(const QString & strFileName)
 {
+	QString strFilePath = QFileInfo(strFileName).canonicalFilePath();
+	foreach (QMdiSubWindow* pWindow, m_pMdiArea->subWindowList())
+	{
+		MyChild* pChild = qobject_cast<MyChild*>(pWindow->widget());
+		if (pChild->currentFile() == strFilePath)
+			return pWindow;
+	}
 	return nullptr;
 }
 
@@ -313,6 +320,19 @@ void MyWord::slotFileOpen()
 	if (!strFileName.isEmpty())
 	{
 		QMdiSubWindow * pExisting = findMyChild(strFileName);
+		if (pExisting)
+		{
+			m_pMdiArea->setActiveSubWindow(pExisting);
+			return;
+		}
+		MyChild* pChild = createMyChild();
+		if (pChild->loadFile(strFileName))
+		{
+			statusBar()->showMessage(tr("load file"), 2000);
+			pChild->show();
+		}
+		else
+			pChild->close();
 	}
 }
 
