@@ -32,6 +32,11 @@ public:
 	void slotCopy();
 	void slotPaste();
 
+	void slotTextBold();
+	void slotTextItalic();
+	void slotTextUnderline();
+
+
 	void textAligen(QAction*);
 	void updateWindowMenu();
 	void about();

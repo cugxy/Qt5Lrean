@@ -16,6 +16,8 @@ public:
 	bool saveFile(QString strFileName);
 	QString userFriendlyCurrentFile();
 	QString currentFile();
+
+	void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
 private:
 	void setCurrentFile(const QString &strFileName);
 	bool maybeSave();

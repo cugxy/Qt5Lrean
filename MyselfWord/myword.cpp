@@ -110,6 +110,7 @@ void MyWord::createActions()
 	QFont bfont;
 	bfont.setBold(true);
 	m_pBoldAct->setFont(bfont);
+	QObject::connect(m_pBoldAct, SIGNAL(trigged()), this, SLOT(slotTextBold()));
 
 	m_pItalicAct = new QAction(tr("Italic"), this);
 	m_pItalicAct->setShortcut(QKeySequence::Italic);
@@ -118,6 +119,7 @@ void MyWord::createActions()
 	QFont ifont;
 	ifont.setItalic(true);
 	m_pItalicAct->setFont(ifont);
+	QObject::connect(m_pItalicAct, SIGNAL(trigged()), this, SLOT(slotTextItalic()));
 
 	m_pUnderlineAct = new QAction(tr("Underline"), this);
 	m_pUnderlineAct->setShortcut(QKeySequence::Underline);
@@ -126,6 +128,7 @@ void MyWord::createActions()
 	QFont ufont;
 	ufont.setUnderline(true);
 	m_pUnderlineAct->setFont(ufont);
+	QObject::connect(m_pUnderlineAct, SIGNAL(trigged()), this, SLOT(slotTextUnderline()));
 
 	QActionGroup * pGrp = new QActionGroup(this);
 	connect(pGrp, SIGNAL(triggered(QAction*)), this, SLOT(textAligen(QAction*)));
@@ -383,6 +386,30 @@ void MyWord::slotPaste()
 {
 	if (activeChild())
 		activeChild()->paste();
+}
+
+void MyWord::slotTextBold()
+{
+	QTextCharFormat format;
+	format.setFontWeight(m_pBoldAct->isChecked() ? QFont::Bold : QFont::Normal);
+	if (activeChild())
+		activeChild()->mergeFormatOnWordOrSelection(format);
+}
+
+void MyWord::slotTextItalic()
+{
+	QTextCharFormat format;
+	format.setFontItalic(m_pItalicAct->isChecked());
+	if (activeChild())
+		activeChild()->mergeFormatOnWordOrSelection(format);
+}
+
+void MyWord::slotTextUnderline()
+{
+	QTextCharFormat format;
+	format.setFontUnderline(m_pUnderlineAct->isChecked());
+	if (activeChild())
+		activeChild()->mergeFormatOnWordOrSelection(format);
 }
 
 void MyWord::updateWindowMenu()

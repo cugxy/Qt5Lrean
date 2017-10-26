@@ -94,6 +94,15 @@ QString MyChild::currentFile()
 	return QString();
 }
 
+void MyChild::mergeFormatOnWordOrSelection(const QTextCharFormat & format)
+{
+	QTextCursor cursor = this->textCursor();	
+	if (!cursor.hasSelection())
+		cursor.select(QTextCursor::WordUnderCursor);
+	cursor.mergeCharFormat(format);
+	this->mergeCurrentCharFormat(format);
+}
+
 void MyChild::setCurrentFile(const QString & strFileName)
 {
 	m_strCurrentFile = QFileInfo(strFileName).canonicalFilePath();
