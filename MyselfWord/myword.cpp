@@ -76,26 +76,31 @@ void MyWord::createActions()
 	m_pUndoAct->setShortcut(QKeySequence::Undo);
 	m_pUndoAct->setToolTip(tr("Undo"));
 	m_pUndoAct->setStatusTip(tr("Undo"));
+	QObject::connect(m_pUndoAct, SIGNAL(trigged()), this, SLOT(slotUndo()));
 
 	m_pRedoAct = new QAction(tr("Redo"), this);
 	m_pRedoAct->setShortcut(QKeySequence::Redo);
 	m_pRedoAct->setToolTip(tr("Redo"));
 	m_pRedoAct->setStatusTip(tr("Redo"));
+	QObject::connect(m_pRedoAct, SIGNAL(trigged()), this, SLOT(slotRedo()));
 
 	m_pCutAct = new QAction(tr("Cut"), this);
 	m_pCutAct->setShortcut(QKeySequence::Cut);
 	m_pCutAct->setToolTip(tr("Cut"));
 	m_pCutAct->setStatusTip(tr("Cut"));
+	QObject::connect(m_pCutAct, SIGNAL(trigged()), this, SLOT(slotCut()));
 
 	m_pCopyAct = new QAction(tr("Copy"), this);
 	m_pCopyAct->setShortcut(QKeySequence::Copy);
 	m_pCopyAct->setToolTip(tr("Copy"));
 	m_pCopyAct->setStatusTip(tr("Copy"));
+	QObject::connect(m_pCopyAct, SIGNAL(trigged()), this, SLOT(slotCopy()));
 
 	m_pPasteAct = new QAction(tr("Paste"), this);
 	m_pPasteAct->setShortcut(QKeySequence::Paste);
 	m_pPasteAct->setToolTip(tr("Paste"));
 	m_pPasteAct->setStatusTip(tr("Paste"));
+	QObject::connect(m_pPasteAct, SIGNAL(trigged()), this, SLOT(slotPaste()));
 
 
 	m_pBoldAct = new QAction(tr("Bolb"), this);
@@ -295,7 +300,6 @@ QMdiSubWindow * MyWord::findMyChild(const QString & strFileName)
 	return nullptr;
 }
 
-
 void MyWord::closeEvent(QCloseEvent * event)
 {
 	m_pMdiArea->closeAllSubWindows();
@@ -349,6 +353,36 @@ void MyWord::slotFileSaveAs()
 {
 	if (activeChild() && activeChild()->saveAs())
 		statusBar()->showMessage(tr("save success"), 2000);
+}
+
+void MyWord::slotUndo()
+{
+	if (activeChild())
+		activeChild()->undo();
+}
+
+void MyWord::slotRedo()
+{
+	if (activeChild())
+		activeChild()->redo();
+}
+
+void MyWord::slotCut()
+{
+	if (activeChild())
+		activeChild()->cut();
+}
+
+void MyWord::slotCopy()
+{
+	if (activeChild())
+		activeChild()->copy();
+}
+
+void MyWord::slotPaste()
+{
+	if (activeChild())
+		activeChild()->paste();
 }
 
 void MyWord::updateWindowMenu()

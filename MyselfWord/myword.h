@@ -26,6 +26,11 @@ public:
 	void slotFileOpen();
 	void slotFileSave();
 	void slotFileSaveAs();
+	void slotUndo();
+	void slotRedo();
+	void slotCut();
+	void slotCopy();
+	void slotPaste();
 
 	void textAligen(QAction*);
 	void updateWindowMenu();
